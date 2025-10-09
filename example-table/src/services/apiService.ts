@@ -26,6 +26,15 @@ export interface Employee {
   phone_number: string;
 }
 
+export interface Supplier {
+  value: string;
+  label: string;
+  code: string;
+  name: string;
+  address: string;
+  phone: string;
+}
+
 // Visitor API functions
 export const fetchVisitorData = async (): Promise<Visitor[]> => {
   try {
@@ -74,8 +83,8 @@ export const allVisitor = async (): Promise<Visitor[]> => {
 
 export const getVisitorPrintData = async (visitorId: string): Promise<Visitor> => {
   try {
-    const response = await axios.get(`${apiBaseUrl}/print/${visitorId}`);
-    return response.data as Visitor; // Adjust based on your API's response structure
+    const response = await axios.get(`${apiBaseUrl}/print-data/${visitorId}`);
+    return (response.data as { data: Visitor }).data;
   } catch (error) {
     console.error('Error fetching visitor print data:', error);
     throw error;
@@ -130,5 +139,36 @@ export const deleteEmployeeData = async (nik: string): Promise<void> => {
   } catch (error) {
     console.error('Error deleting employee data:', error);
     throw error;
+  }
+};
+
+// Supplier API functions
+export const fetchSupplierData = async (): Promise<Supplier[]> => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/supplier/`);
+    return (response.data as { data: Supplier[] }).data;
+  } catch (error) {
+    console.error('Error fetching supplier data:', error);
+    return [];
+  }
+};
+
+export const getSupplierByCode = async (bpCode: string): Promise<Supplier | null> => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/supplier/${bpCode}`);
+    return (response.data as { data: Supplier }).data;
+  } catch (error) {
+    console.error('Error fetching supplier by code:', error);
+    return null;
+  }
+};
+
+export const searchSuppliers = async (searchTerm: string, limit: number = 50): Promise<Supplier[]> => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/supplier/search?q=${encodeURIComponent(searchTerm)}&limit=${limit}`);
+    return (response.data as { data: Supplier[] }).data;
+  } catch (error) {
+    console.error('Error searching suppliers:', error);
+    return [];
   }
 };
