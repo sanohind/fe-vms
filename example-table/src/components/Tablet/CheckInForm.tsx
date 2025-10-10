@@ -29,7 +29,7 @@ const CheckInForm: React.FC = () => {
     department: '',
   });
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [, setSuppliers] = useState<Supplier[]>([]);
   const [supplierSuggestions, setSupplierSuggestions] = useState<Supplier[]>([]);
   const [suggestions, setSuggestions] = useState<Employee[]>([]);
   const [isSearchingSuppliers, setIsSearchingSuppliers] = useState(false);
@@ -81,10 +81,7 @@ const CheckInForm: React.FC = () => {
     setFormData(updatedFormData);
   };
 
-  const handleSupplierChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedSupplierCode = e.target.value;
-    setFormData({ ...formData, visitor_from: selectedSupplierCode });
-  };
+  // Removed unused handleSupplierChange function
 
   const handleSupplierSearch = async (searchTerm: string) => {
     if (searchTerm.length < 2) {
