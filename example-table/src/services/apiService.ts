@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Define the base API URL
-const apiBaseUrl = 'http://127.0.0.1:8000/api';
+const apiBaseUrl = 'http://127.0.0.1:8003/api';
 
 // Define the Visitor and Employee interfaces
 export interface Visitor {
@@ -13,6 +13,7 @@ export interface Visitor {
   visitor_needs: string;
   visitor_amount: number;
   visitor_vehicle: string;
+  plan_delivery_time?: string | null;
   department: string;
   visitor_checkin: string;
   visitor_checkout: string | null;
@@ -33,6 +34,16 @@ export interface Supplier {
   name: string;
   address: string;
   phone: string;
+}
+
+export interface DeliveryData {
+  no_dn: string;
+  driver_name: string;
+  plat_number: string;
+  plan_delivery_time: string;
+  supplier_name: string;
+  supplier_code?: string;
+  plan_delivery_date?: string;
 }
 
 // Visitor API functions
@@ -169,6 +180,17 @@ export const searchSuppliers = async (searchTerm: string, limit: number = 50): P
     return (response.data as { data: Supplier[] }).data;
   } catch (error) {
     console.error('Error searching suppliers:', error);
+    return [];
+  }
+};
+
+// Delivery API functions
+export const fetchDeliveryData = async (): Promise<DeliveryData[]> => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/delivery/today`);
+    return (response.data as { data: DeliveryData[] }).data;
+  } catch (error) {
+    console.error('Error fetching delivery data:', error);
     return [];
   }
 };
