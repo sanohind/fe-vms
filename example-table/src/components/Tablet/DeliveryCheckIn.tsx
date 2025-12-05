@@ -223,12 +223,12 @@ const DeliveryCheckIn: React.FC = () => {
         </div>
       )}
 
-      {/* Pagination */}
-      {!loading && deliveryData.length > itemsPerPage && (
+{/* Pagination */}
+{!loading && deliveryData.length > itemsPerPage && (
         <div className="flex justify-end mt-6 items-center space-x-2">
           <button
             className={`px-4 py-2 bg-gray-300 text-gray-700 rounded-md ${
-              currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+              currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-400'
             }`}
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -236,11 +236,24 @@ const DeliveryCheckIn: React.FC = () => {
             &lt;
           </button>
 
-          <span className="px-4 py-2 bg-blue-800 text-white rounded-md">{currentPage}</span>
+          {/* Page Numbers */}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <button
+              key={pageNum}
+              className={`px-4 py-2 rounded-md ${
+                currentPage === pageNum
+                  ? 'bg-blue-800 text-white'
+                  : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+              }`}
+              onClick={() => handlePageChange(pageNum)}
+            >
+              {pageNum}
+            </button>
+          ))}
 
           <button
             className={`px-4 py-2 bg-gray-300 text-gray-700 rounded-md ${
-              currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+              currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-400'
             }`}
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
